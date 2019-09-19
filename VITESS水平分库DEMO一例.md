@@ -1,152 +1,270 @@
-##  VITESSË®Æ½·Ö¿âDEMOÒ»Àý 
+##  VITESSæ°´å¹³åˆ†åº“DEMOä¸€ä¾‹ 
                                  
-### ×÷Õß                                 
+### ä½œè€…                                 
 windtalkerbj                                 
                                  
-### ÈÕÆÚ                                 
+### æ—¥æœŸ                                 
 2019-09-19                               
                                  
-### ±êÇ©                                 
-MYSQL , VITESS , Ë®Æ½·Ö¿â·Ö±í£¬¼Ü¹¹£¬×°±Æ   
+### æ ‡ç­¾                                 
+MYSQL , VITESS , æ°´å¹³åˆ†åº“åˆ†è¡¨ï¼Œæž¶æž„ï¼Œè£…é€¼   
 
-### Ìá¸Ù  
-0£¬±³¾°
-1. Ô¤±¸
-2. Ä¿±êÔ¸¾°£º
+### æçº²  
+0ï¼ŒèƒŒæ™¯
+
+1. é¢„å¤‡
+
+2. ç›®æ ‡æ„¿æ™¯
+
 3-5. STEP BY STEP
-7. Î´Íê´ýÐø£º
 
-0,±³¾°
-	ÎªÊ²Ã´ÒªÐ´±¾ÎÄ£¿
-	1 Ä¿Ç°baidu/stackoverflowÉÏµÄ·Ö¿âÑùÀý¶¼ÊÇ»ùÓÚ×Ô´øµÄcustomer/order/product,ÈÃÈËÉúÑá,
-	×îÖØÒªµÄÊÇ£¬ÒòÎªÃ»ÓÐ´ÓÍ·¹¹½¨×Ô¶¨ÒåµÄCELL/KEYSPACE/TABLET,ÕâÀàÎÄÕÂ¶ªÊ§ÁËºÜ¶àÏ¸½Ú
-	2 VITESS×Ô´øDEMOÁ÷³Ì: ½¨Á¢NO SHARDING DEMO->´¹Ö±·Ö¿â->Ë®Æ½·Ö¿â£¬²½ÖèÍ·Ð÷ºÜ¶à£¬±¾ÎÄÊÇ¾«¼ò°æ£¬´ó¼ÒÏ²»¶Ë®Æ½·Ö£¬ÎÒ¾Í´ø´ó¼ÒË®Æ½·Ö
-	3 ÌâÍâ»°:ÌÖÑáJAVA¾ÍÊÇÒòÎªÆä²»¹»¿ªÃÅ½¨É½£¬¸÷ÖÖ·â×°(OTTERÊµÏÖ¸ù±¾¿´²»½øÈ¥),ÎÒ¾ÍÏ²»¶×î¼òµ¥´Ö±©µÄ£¬ÏÈÅªÃ÷°×ÔõÃ´»ØÊÂ£¬ÔÙËµÍæ±Æ¸ñ¸ßµÄÊÂ¶ù
+7. æœªå®Œå¾…ç»­
+
+
+### 0,èƒŒæ™¯
+	ä¸ºä»€ä¹ˆè¦å†™æœ¬æ–‡ï¼Ÿ
+	1 ç›®å‰baidu/stackoverflowä¸Šçš„åˆ†åº“æ ·ä¾‹éƒ½æ˜¯åŸºäºŽè‡ªå¸¦çš„customer/order/product,è®©äººç”ŸåŽŒ,æœ€é‡è¦çš„æ˜¯ï¼Œå› ä¸ºæ²¡æœ‰ä»Žå¤´æž„å»ºè‡ªå®šä¹‰çš„CELL/KEYSPACE/TABLET,è¿™ç±»æ–‡ç« ä¸¢å¤±äº†å¾ˆå¤šç»†èŠ‚
 	
-1,Ô¤±¸
-²»ÐèÒª·ÖÇøµÄ±í£ºsys_code_tl
+	2 VITESSè‡ªå¸¦DEMOæµç¨‹: å»ºç«‹NO SHARDING DEMO->åž‚ç›´åˆ†åº“->æ°´å¹³åˆ†åº“ï¼Œæ­¥éª¤å¤´ç»ªå¾ˆå¤šï¼Œæœ¬æ–‡æ˜¯ç²¾ç®€ç‰ˆï¼Œå¤§å®¶å–œæ¬¢æ°´å¹³åˆ†ï¼Œæˆ‘å°±å¸¦å¤§å®¶æ°´å¹³åˆ†
+	
+	3 é¢˜å¤–è¯:è®¨åŽŒJAVAå°±æ˜¯å› ä¸ºå…¶ä¸å¤Ÿå¼€é—¨å»ºå±±ï¼Œå„ç§å°è£…(OTTERå®žçŽ°æ ¹æœ¬çœ‹ä¸è¿›åŽ»),æˆ‘å°±å–œæ¬¢æœ€ç®€å•ç²—æš´çš„ï¼Œå…ˆå¼„æ˜Žç™½æ€Žä¹ˆå›žäº‹ï¼Œå†è¯´çŽ©é€¼æ ¼é«˜çš„äº‹å„¿
+	
+	
+### 1,é¢„å¤‡
+ä¸éœ€è¦åˆ†åŒºçš„è¡¨ï¼šsys_code_tl
+
 CREATE TABLE sys_code_tl (
+
   CODE_ID bigint(20) NOT NULL,
+  
   LANG varchar(10) NOT NULL,
-  DESCRIPTION varchar(240) DEFAULT NULL COMMENT '¿ìÂëÃèÊö',
+  
+  DESCRIPTION varchar(240) DEFAULT NULL COMMENT 'å¿«ç æè¿°',
+  
   OBJECT_VERSION_NUMBER bigint(20) DEFAULT '1',
+  
   REQUEST_ID bigint(20) DEFAULT '-1',
+  
   PROGRAM_ID bigint(20) DEFAULT '-1',
+  
   ...
-  Êý¾Ý¼ÇÂ¼500¶àÌõ
-Á÷Ë®ºÅ±í(VITESS½â¾öAUTO INCREMENTÎÊÌâµÄ·½°¸£¬²Î¿´¹ÙÍø²»¶àËµ£©
+  
+  æ•°æ®è®°å½•500å¤šæ¡
+  
+æµæ°´å·è¡¨(VITESSè§£å†³AUTO INCREMENTé—®é¢˜çš„æ–¹æ¡ˆï¼Œå‚çœ‹å®˜ç½‘ä¸å¤šè¯´ï¼‰
+
 create table head_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';
+
 create table line_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';
 
-ÐèÒª·ÖÇøµÄ±í£º
-CREATE TABLE XXXX_headers (
-  HEADER_ID bigint(20) NOT NULL  COMMENT '±íID£¬Ö÷¼ü£¬¹©ÆäËû±í×öÍâ¼ü',
-  SOURCE_SYSTEM_CODE varchar(30) DEFAULT NULL COMMENT 'À´Ô´ÏµÍ³',
-  BATCH_NUM varchar(100) DEFAULT NULL COMMENT 'Åú´ÎºÅ',
-  INTERFACE_NAME varchar(240) DEFAULT NULL COMMENT '½Ó¿Ú¶¨ÒåÃû³Æ',
-  ...
-  ×Ö¶Î39¸ö£¬Êý¾Ý¼ÇÂ¼ 10WÌõ×óÓÒ
-CREATE TABLE XXXXX_lines (
-  	LINE_ID bigint(20) NOT NULL ,
-	HEADER_ID bigint(20) NOT NULL COMMENT 'Í·±íID£¬ÓÃÓÚ¹ØÁª±¾ÐÐÊý¾ÝËùÊôµÄÅú´Î',
-	SOURCE_ITERFACE_ID bigint(20) NOT NULL COMMENT 'À´Ô´ID£¬INTERFACE±íÖ÷¼üID',
-	PROCESS_DATE datetime DEFAULT NULL COMMENT 'ºóÌ¨´¦ÀíÈÕÆÚ£¬±ÈÈçÉú³É½áËãµ¥ÈÕÆÚ',    
-	...
-  ×Ö¶Î½ü300¸ö£¬Êý¾Ý¼ÇÂ¼ 300WÌõ
-XXXX_headersºÍXXXXX_lines°´×Ö¶ÎHEADER_ID£¬Ò»¶Ô¶à¹ØÏµ
-	
-2,Ä¿±êÔ¸¾°£º
-ÔÚÒ»¸öCELL(Êý¾ÝÖÐÐÄ)ÏÂÓÐÁ½¸öKEYSPACE(Âß¼­Êý¾Ý¿â),Ò»¸öÊÇk_normal,´æ·ÅÎÞÐèSHARDµÄÊý¾Ý£¬ÁíÒ»¸öÊÇk_multi,´æ·ÅÐèÒª·ÖÇøµÄÊý¾Ý
-ÆäÖÐk_multiÓÐÁ½¸ö·ÖÇø£¬¾ù·ÖÉÏÎÄÖÐËùÓÐµÄXXXX_headers/XXXXX_lines
 
-3,´´½¨CELL/KEYSPACE/MYSQLÂß¼­¼¯Èº
-#### Æô¶¯etcd,´´½¨z_hscs CELL(CELL==Êý¾ÝÖÐÐÄ,Ð´Õâ¾ä»°Ê±£¬¸Ð¾õÅ£Æø³åÌì£¬XXÔÚÊÖ£¬½­É½ÎÒÓÐ)
+éœ€è¦åˆ†åŒºçš„è¡¨ï¼š
+
+CREATE TABLE XXXX_headers (
+
+  HEADER_ID bigint(20) NOT NULL  COMMENT 'è¡¨IDï¼Œä¸»é”®ï¼Œä¾›å…¶ä»–è¡¨åšå¤–é”®',
+  
+  SOURCE_SYSTEM_CODE varchar(30) DEFAULT NULL COMMENT 'æ¥æºç³»ç»Ÿ',
+  
+  BATCH_NUM varchar(100) DEFAULT NULL COMMENT 'æ‰¹æ¬¡å·',
+  
+  INTERFACE_NAME varchar(240) DEFAULT NULL COMMENT 'æŽ¥å£å®šä¹‰åç§°',
+  
+  ...
+  
+  å­—æ®µ39ä¸ªï¼Œæ•°æ®è®°å½• 10Wæ¡å·¦å³
+  
+CREATE TABLE XXXXX_lines (
+
+  	LINE_ID bigint(20) NOT NULL ,
+	
+	HEADER_ID bigint(20) NOT NULL COMMENT 'å¤´è¡¨IDï¼Œç”¨äºŽå…³è”æœ¬è¡Œæ•°æ®æ‰€å±žçš„æ‰¹æ¬¡',
+	
+	SOURCE_ITERFACE_ID bigint(20) NOT NULL COMMENT 'æ¥æºIDï¼ŒINTERFACEè¡¨ä¸»é”®ID',
+	
+	PROCESS_DATE datetime DEFAULT NULL COMMENT 'åŽå°å¤„ç†æ—¥æœŸï¼Œæ¯”å¦‚ç”Ÿæˆç»“ç®—å•æ—¥æœŸ', 
+	
+	...
+	
+  å­—æ®µè¿‘300ä¸ªï¼Œæ•°æ®è®°å½• 300Wæ¡
+  
+XXXX_headerså’ŒXXXXX_linesæŒ‰å­—æ®µHEADER_IDï¼Œä¸€å¯¹å¤šå…³ç³»
+
+	
+### 2,ç›®æ ‡æ„¿æ™¯ï¼š
+
+åœ¨ä¸€ä¸ªCELL(æ•°æ®ä¸­å¿ƒ)ä¸‹æœ‰ä¸¤ä¸ªKEYSPACE(é€»è¾‘æ•°æ®åº“),ä¸€ä¸ªæ˜¯k_normal,å­˜æ”¾æ— éœ€SHARDçš„æ•°æ®ï¼Œå¦ä¸€ä¸ªæ˜¯k_multi,å­˜æ”¾éœ€è¦åˆ†åŒºçš„æ•°æ®
+
+å…¶ä¸­k_multiæœ‰ä¸¤ä¸ªåˆ†åŒºï¼Œå‡åˆ†ä¸Šæ–‡ä¸­æ‰€æœ‰çš„XXXX_headers/XXXXX_lines
+
+
+### 3,åˆ›å»ºCELL/KEYSPACE/MYSQLé€»è¾‘é›†ç¾¤
+
+#### å¯åŠ¨etcd,åˆ›å»ºz_hscs CELL(CELL==æ•°æ®ä¸­å¿ƒ,å†™è¿™å¥è¯æ—¶ï¼Œæ„Ÿè§‰ç‰›æ°”å†²å¤©ï¼ŒXXåœ¨æ‰‹ï¼Œæ±Ÿå±±æˆ‘æœ‰)
+
 CELL=z_hscs "$script_root/etcd-up.sh"
-#### Æô¶¯¹ÜÀíÌ¨·þÎñ
+
+#### å¯åŠ¨ç®¡ç†å°æœåŠ¡
+
 CELL=z_hscs "$script_root/vtctld-up.sh"
-#### ´´½¨K_normal keyspaceºÍ¶ÔÓ¦MYSQLÂß¼­¼¯Èº
+
+#### åˆ›å»ºK_normal keyspaceå’Œå¯¹åº”MYSQLé€»è¾‘é›†ç¾¤
+
 CELL=z_hscs KEYSPACE=k_normal UID_BASE=100 "$script_root/vttablet-up.sh"
+
 sleep 15
-#### ½«MYSQLÂß¼­¼¯ÈºÖÐIDÎª100µÄMYSQLÖÃÎªMASTER£¬Í¬Ê±ÉèÖÃREADONLY=0
+
+#### å°†MYSQLé€»è¾‘é›†ç¾¤ä¸­IDä¸º100çš„MYSQLç½®ä¸ºMASTERï¼ŒåŒæ—¶è®¾ç½®READONLY=0
 ./lvtctl.sh InitShardMaster -force k_normal/0 z_hscs-100
 
-#### ÔÚk_normalÉÏ´´½¨²»ÐèÒªshardµÄ±í
+#### åœ¨k_normalä¸Šåˆ›å»ºä¸éœ€è¦shardçš„è¡¨
+
 ./lvtctl.sh ApplySchema -sql-file create_hscs_normal.sql  k_normal
-#### ÔÚVITESSµÇ¼Ç²»ÐèÒªshardµÄ±íµÄMETAINFO
+
+#### åœ¨VITESSç™»è®°ä¸éœ€è¦shardçš„è¡¨çš„METAINFO
+
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
 
-#### ´´½¨VSHEMA(VITESS·ÖÇø¹æÔòÎÄ¼þ,ºóÃæÁÄ) vschema
+
+#### åˆ›å»ºVSHEMA(VITESSåˆ†åŒºè§„åˆ™æ–‡ä»¶,åŽé¢èŠ) vschema
+
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
 
-#### Æô¶¯VTGATE(GODËµ£¬ÒªÓÐÃÅ,È»ºó¾ÍÓÐÁËÃÅ,Á¬½ÓVITESSÖ®Â·ÒÑÍ¨£¡)
+
+#### å¯åŠ¨VTGATE(GODè¯´ï¼Œè¦æœ‰é—¨,ç„¶åŽå°±æœ‰äº†é—¨,è¿žæŽ¥VITESSä¹‹è·¯å·²é€šï¼)
+
 CELL=z_hscs "$script_root/vtgate-up.sh"
 
-#### ´´½¨K_multi keyspace
+
+#### åˆ›å»ºK_multi keyspace
+
 ./lvtctl.sh CreateKeyspace  k_multi
 
-4,´´½¨K_MULTI¶ÔÓ¦µÄSHARDÊµÀý(2¸öMYSQL¼¯Èº£¬Ã¿¸ö¼¯Èº°üº¬3¸öMYSQLD,³Ðµ£MASTER/SLAVE/READ_ONLY_SVC)
-#### Á½¸öSHARDÆô¶¯
+
+### 4,åˆ›å»ºK_MULTIå¯¹åº”çš„SHARDå®žä¾‹(2ä¸ªMYSQLé›†ç¾¤ï¼Œæ¯ä¸ªé›†ç¾¤åŒ…å«3ä¸ªMYSQLD,æ‰¿æ‹…MASTER/SLAVE/READ_ONLY_SVC)
+
+#### ä¸¤ä¸ªSHARDå¯åŠ¨
+
 SHARD=-80 CELL=z_hscs KEYSPACE=k_multi UID_BASE=300 "$script_root/vttablet-up.sh"
+
 SHARD=80- CELL=z_hscs KEYSPACE=k_multi UID_BASE=400 "$script_root/vttablet-up.sh"
+
 sleep 15
+
 ./lvtctl.sh InitShardMaster -force k_multi/-80 z_hscs-300
+
 ./lvtctl.sh InitShardMaster -force k_multi/80- z_hscs-400
 
-5,ÔÚMYSQL´´½¨·ÖÇø±í²¢µÇ¼Ç·ÖÇø¹æÔòµ½VITESSÉÏ
+
+### 5,åœ¨MYSQLåˆ›å»ºåˆ†åŒºè¡¨å¹¶ç™»è®°åˆ†åŒºè§„åˆ™åˆ°VITESSä¸Š
+
 ./lvtctl.sh ApplySchema -sql-file create_hscs_sharded.sql k_multi
-#### ÔÚVITESSµÇ¼ÇÐèÒªshardµÄ±íµÄMETAINFO
+
+#### åœ¨VITESSç™»è®°éœ€è¦shardçš„è¡¨çš„METAINFO
+
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_sharded.json k_multi
 
-6,VSHEMAÑùÀý£º(VITESS±Æ¸ñ×î¸ß²¿·ÖÖ®Ò»,ÎÒÄ¿Ç°ÕÆÎÕ³Ì¶È»¹²»¹»×°±Æ£¬ÆÚ´ýÏÂÎÄ°É...)
+
+### 6,VSHEMAæ ·ä¾‹ï¼š(VITESSé€¼æ ¼æœ€é«˜éƒ¨åˆ†ä¹‹ä¸€,æˆ‘ç›®å‰æŽŒæ¡ç¨‹åº¦è¿˜ä¸å¤Ÿè£…é€¼ï¼ŒæœŸå¾…ä¸‹æ–‡å§...)
+
 unshard:
+
 {
+
     "sharded": false,
+    
     "tables": {
+    
         "head_seq": {
+	
             "type": "sequence"
+	    
         },
+	
         "line_seq": {
+	
             "type": "sequence"
+	    
         },
+	
         "sys_code_tl":{
+	
         }
+	
     }
+    
 }
+
 shard:
+
 {
+
     "sharded": true,
+    
     "vindexes": {
+    
         "hash": {
+	
             "type": "hash"
+	    
         }
+	
     },
+    
     "tables": {
+    
         "hscs_itf_imp_headers": {
+	
             "column_vindexes": [
+	    
                 {
+		
                     "column": "header_id",
+		    
                     "name": "hash"
+		    
                 }
+		
             ],
+	    
             "auto_increment": {
+	    
                 "column": "header_id",
+		
                 "sequence": "head_seq"
+		
             }
+	    
         },
+	
         "hscs_itf_imp_lines": {
+	
             "column_vindexes": [
+	    
                 {
+		
                     "column": "header_id",
+		    
                     "name": "hash"
+		    
                 }
+		
             ],
+	    
             "auto_increment": {
+	    
                 "column": "line_id",
+		
                 "sequence": "line_seq"
+		
             }
+	    
         }
+	
     }
+    
 }
+
                 
 
-7£¬Î´Íê´ýÐø(¶¯Ì¬SHARDING¡¢¸÷ÖÖSHARDING-VINDEX...)
+### 7ï¼Œæœªå®Œå¾…ç»­(åŠ¨æ€SHARDINGã€å„ç§SHARDING-VINDEX...)
