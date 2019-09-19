@@ -37,74 +37,137 @@ git clone https://github.com/vitessio/vitess.git vitess.io/vitess
 ### 3，编译
 
 不安装ZOOKEEPER,我想用ETCD！
+
 在bootstrap.sh中删除if [ "zk_ver" "zk_ver" install_zookeeper
+
 fi
+
 然后
+
 1）./bootstrap.sh 1>install.log 2>install.err,开始编译
+
 过程中会输出如下：
+
 creating git hooks
+
 installing gRPC 1.16.0
+
 Installing setuptools, pip, wheel...
+
 Installing collected packages: setuptools, pip, wheel
+
 Successfully installed pip-19.2.3 setuptools-41.2.0 wheel-0.33.6
+
 Collecting virtualenv
+
 Successfully installed virtualenv-16.7.5
+
 Collecting mysql-connector-python
+
 Successfully installed mysql-connector-python-8.0.17 protobuf-3.9.1 six-1.12.0
+
 Successfully installed enum34-1.1.6 futures-3.3.0 grpcio-1.16.0 grpcio-tools-1.16.0
+
 installing protoc 3.6.1
+
 installing Zookeeper 3.4.14
+
 BUILD SUCCESSFUL
+
 installing etcd v3.3.10
+
 installing Consul 1.4.0
+
 installing py-mock 1.0.1
+
 Successfully installed mysql-connector-python-8.0.17 protobuf-3.9.1 six-1.12.0
+
 bootstrap finished - run 'source dev.env' or 'source build.env' in your shell before building.
 
+
 .2)source dev.env，然后运行
+
 [root@XXX vitess]# env | grep VT
+
 VTDATAROOT=/data1/vtdataroot
+
 VTTOP=/opt/mygo/src/vitess.io/vitess
+
 VTROOT=/opt/mygo/src/vitess.io/vitess
+
 VT_MYSQL_ROOT=/usr/sbin
+
 VTPORTSTART=15000
+
 make build
+
 生成的BIN在VTROOT/bin下
+
 至此，需要运行的VITESS已编译完成（万里长征，你走完第一步，恭喜）
 
-4，本地DEMO环境搭建（万里长征的剩余80%...）
+
+### 4，本地DEMO环境搭建（万里长征的剩余80%...）
+
 1）准备工作：
+
 因VITESS不能用ROOT用户启动（VTCTL进程会强制中断），因此在VITESS源码目录下对web/vthook/lib/pkg/examples/dist/config/bin等目录打包，然后新增vitess用户作为DEMO运行环境
+
 groupadd vitess
+
 useradd -d /data1/vitess -g vitess -m vitess
+
 chown -R vitess:vitess vtdataroot
+
 注：vi /etc/hosts
 
-新增 XXX.XXX.XXX.109 XXDB-XX-109(解决NewActionAgent() failed: FullyQualifiedHostname: f
+
+新增 XXX.XXX.XXX.109 XXDB-XX-109(解决NewActionAgent() failed: FullyQualifiedHostname: 
+f
 ailed to reverse lookup this machine's local IP (fe80::215:5dff:fe06:1b3e%eth0): lookup fe80::215
+
 :5dff:fe06:1b3e%eth0: unrecognized address)
+
 
 2).profile调整
 
+
 VITESS 2019/09/10
+
 export VTROOT=VTROOT
+
 export MYSQL_FLAVOR=MySQL56
+
 export VTDATAROOT=/data1/vtdataroot
+
 export TOPO=etcd2
+
 PATH=HOME/.local/bin:VTTOP/bin
 
+
 3）LOCAL模式启动
+
 [vitess@XXXX local]$ ./101_initial_cluster.sh
+
 输出日志如下：
+
 enter etcd2 env
+
 add /vitess/global
+
 add /vitess/zone1
+
 add zone1 CellInfo
+
 etcd start done...
+
 enter etcd2 env
+
 Starting vtctld...
+
 Access vtctld web UI at http://xx-155-109:15000
+
 Send commands with: vtctlclient -server xxx-xxx-109:15999 ...
+
 enter etcd2 env
 Starting MySQL for tablet zone1-0000000100...
 Resuming from existing vttablet dir:
