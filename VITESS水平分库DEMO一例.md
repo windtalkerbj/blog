@@ -23,9 +23,10 @@ MYSQL , VITESS , 水平分库分表，架构，装逼
 
 ### 0,背景
   为什么要写本文？
+  
   1 目前baidu/stackoverflow上的分库样例都是基于自带的customer/order/product,让人生厌,最重要的是，
   
-	因为没有从头构建自定义的CELL/KEYSPACE/TABLET,这类文章丢失了很多细节
+  因为没有从头构建自定义的CELL/KEYSPACE/TABLET,这类文章丢失了很多细节
 	
   2 VITESS自带DEMO流程: 建立NO SHARDING DEMO->垂直分库->水平分库，步骤头绪很多，
   
