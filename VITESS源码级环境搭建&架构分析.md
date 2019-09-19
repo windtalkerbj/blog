@@ -239,7 +239,7 @@ vttablet-up.sh：
 初始化管理命令：
 
 
-# 将一个副本(replicas)设置为master,同时设置READ-ONLY为OFF
+将一个副本(replicas)设置为master,同时设置READ-ONLY为OFF
 
 vtctlclient -server localhost:15999 InitShardMaster -force commerce/0 zone1-100
 
