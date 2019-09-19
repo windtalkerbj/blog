@@ -1,24 +1,36 @@
-1,¸ÅÊö
-VitessÊÇÒ»¸öÓÃÓÚ¶ÔMySql½øĞĞË®Æ½À©Õ¹µÄ´æ´¢Æ½Ì¨¡£¾­¹ıÓÅ»¯£¬Ëü¿ÉÒÔÏñÔÚ×¨ÓÃÓ²¼şÉÏÄÇÑùÓĞĞ§µØÔËĞĞÔÚÔÆÌåÏµ¡£Ëü¼¯MySql Êı¾İ¿âµÄºÜ¶àÖØÒªÌØĞÔºÍNoSQLÊı¾İ¿âµÄ¿ÉÀ©Õ¹ĞÔÓÚÒ»Ìå¡£±¾ÈËÒòÎª¹¤×÷ĞèÒª£¬»ùÓÚÔ´ÂëÄ£Ê½±àÒëºÍ²¿ÊğÁË»ùÓÚ±¾µØµÄVITESSÔËĞĞ»·¾³£¬Î¨Ò»µÄ¸Ğ¾õ¾ÍÊÇ·Ç³£¸´ÔÓ£¬×Ô³ÉÌåÏµ¡£±¾ÎÄÈ¨µ±¹ÜÖĞ¿ú±ª£¬ÓĞÒâÓÚMYSQL´óÊı¾İÁ¿·Ö¿â·Ö±íµÄÍ¬ĞĞ¿´Íê¹Ù·½ÎÄµµºó£¬ÔÙ¿´±¾ÎÄ£¬¿ÉÒÔ½«¡®²»Ã÷¾õÀ÷¡¯ÖĞµÄ¡®²»Ã÷¡¯È¥µô¡£
+##  VITESSæºç çº§ç¯å¢ƒæ­å»º&æ¶æ„åˆ†æ 
+                                 
+### ä½œè€…                                 
+windtalkerbj                                 
+                                 
+### æ—¥æœŸ                                 
+2019-09-19                               
+                                 
+### æ ‡ç­¾                                 
+MYSQL , VITESS , åˆ†åº“åˆ†è¡¨ï¼Œæ¶æ„   
 
-2.×¼±¸¹¤×÷£¨ROOT°²×°£¬¼òµ¥±©Á¦£¡£©
-0£©OS:CentOS Linux release 7.3.1611£¬16C16G
-1£©°²×°GO1.12(VITESS×îĞÂ°æĞèÒªGO1.11+£©
-2£©½â¾öVITESS°²×°¹ı³ÌÖĞ±»Ç½ÎÊÌâ£¬ÔÚ±¾ÓÃ»§ÏÂĞŞ¸Ä.bash_profile,Ìí¼ÓÈçÏÂ
+
+##1,æ¦‚è¿°
+Vitessæ˜¯ä¸€ä¸ªç”¨äºå¯¹MySqlè¿›è¡Œæ°´å¹³æ‰©å±•çš„å­˜å‚¨å¹³å°ã€‚ç»è¿‡ä¼˜åŒ–ï¼Œå®ƒå¯ä»¥åƒåœ¨ä¸“ç”¨ç¡¬ä»¶ä¸Šé‚£æ ·æœ‰æ•ˆåœ°è¿è¡Œåœ¨äº‘ä½“ç³»ã€‚å®ƒé›†MySql æ•°æ®åº“çš„å¾ˆå¤šé‡è¦ç‰¹æ€§å’ŒNoSQLæ•°æ®åº“çš„å¯æ‰©å±•æ€§äºä¸€ä½“ã€‚æœ¬äººå› ä¸ºå·¥ä½œéœ€è¦ï¼ŒåŸºäºæºç æ¨¡å¼ç¼–è¯‘å’Œéƒ¨ç½²äº†åŸºäºæœ¬åœ°çš„VITESSè¿è¡Œç¯å¢ƒï¼Œå”¯ä¸€çš„æ„Ÿè§‰å°±æ˜¯éå¸¸å¤æ‚ï¼Œè‡ªæˆä½“ç³»ã€‚æœ¬æ–‡æƒå½“ç®¡ä¸­çª¥è±¹ï¼Œæœ‰æ„äºMYSQLå¤§æ•°æ®é‡åˆ†åº“åˆ†è¡¨çš„åŒè¡Œçœ‹å®Œå®˜æ–¹æ–‡æ¡£åï¼Œå†çœ‹æœ¬æ–‡ï¼Œå¯ä»¥å°†â€˜ä¸æ˜è§‰å‰â€™ä¸­çš„â€˜ä¸æ˜â€™å»æ‰ã€‚
+
+2.å‡†å¤‡å·¥ä½œï¼ˆROOTå®‰è£…ï¼Œç®€å•æš´åŠ›ï¼ï¼‰
+0ï¼‰OS:CentOS Linux release 7.3.1611ï¼Œ16C16G
+1ï¼‰å®‰è£…GO1.12(VITESSæœ€æ–°ç‰ˆéœ€è¦GO1.11+ï¼‰
+2ï¼‰è§£å†³VITESSå®‰è£…è¿‡ç¨‹ä¸­è¢«å¢™é—®é¢˜ï¼Œåœ¨æœ¬ç”¨æˆ·ä¸‹ä¿®æ”¹.bash_profile,æ·»åŠ å¦‚ä¸‹
 export GO111MODULE=on
 export GOPROXY=https://goproxy.io
-3£©ÔÚ.bash_profileÖĞÉèÖÃÆäËûĞèÒªµÄ±äÁ¿
+3ï¼‰åœ¨.bash_profileä¸­è®¾ç½®å…¶ä»–éœ€è¦çš„å˜é‡
 export VTDATAROOT=/data1/vtdataroot
-export VTROOT=ÏÂÔØÔ´ÂëÔÚGOPATH/srcÏÂ
+export VTROOT=ä¸‹è½½æºç åœ¨GOPATH/srcä¸‹
 git clone https://github.com/vitessio/vitess.git vitess.io/vitess
 
-3£¬±àÒë
-²»°²×°ZOOKEEPER,ÎÒÏëÓÃETCD£¡
-ÔÚbootstrap.shÖĞÉ¾³ıif [ "zk_ver" "zk_ver" install_zookeeper
+3ï¼Œç¼–è¯‘
+ä¸å®‰è£…ZOOKEEPER,æˆ‘æƒ³ç”¨ETCDï¼
+åœ¨bootstrap.shä¸­åˆ é™¤if [ "zk_ver" "zk_ver" install_zookeeper
 fi
-È»ºó
-1£©./bootstrap.sh 1>install.log 2>install.err,¿ªÊ¼±àÒë
-¹ı³ÌÖĞ»áÊä³öÈçÏÂ£º
+ç„¶å
+1ï¼‰./bootstrap.sh 1>install.log 2>install.err,å¼€å§‹ç¼–è¯‘
+è¿‡ç¨‹ä¸­ä¼šè¾“å‡ºå¦‚ä¸‹ï¼š
 creating git hooks
 installing gRPC 1.16.0
 Installing setuptools, pip, wheel...
@@ -38,7 +50,7 @@ installing py-mock 1.0.1
 Successfully installed mysql-connector-python-8.0.17 protobuf-3.9.1 six-1.12.0
 bootstrap finished - run 'source dev.env' or 'source build.env' in your shell before building.
 
-.2)source dev.env£¬È»ºóÔËĞĞ
+.2)source dev.envï¼Œç„¶åè¿è¡Œ
 [root@XXX vitess]# env | grep VT
 VTDATAROOT=/data1/vtdataroot
 VTTOP=/opt/mygo/src/vitess.io/vitess
@@ -46,22 +58,22 @@ VTROOT=/opt/mygo/src/vitess.io/vitess
 VT_MYSQL_ROOT=/usr/sbin
 VTPORTSTART=15000
 make build
-Éú³ÉµÄBINÔÚVTROOT/binÏÂ
-ÖÁ´Ë£¬ĞèÒªÔËĞĞµÄVITESSÒÑ±àÒëÍê³É£¨ÍòÀï³¤Õ÷£¬Äã×ßÍêµÚÒ»²½£¬¹§Ï²£©
+ç”Ÿæˆçš„BINåœ¨VTROOT/binä¸‹
+è‡³æ­¤ï¼Œéœ€è¦è¿è¡Œçš„VITESSå·²ç¼–è¯‘å®Œæˆï¼ˆä¸‡é‡Œé•¿å¾ï¼Œä½ èµ°å®Œç¬¬ä¸€æ­¥ï¼Œæ­å–œï¼‰
 
-4£¬±¾µØDEMO»·¾³´î½¨£¨ÍòÀï³¤Õ÷µÄÊ£Óà80%...£©
-1£©×¼±¸¹¤×÷£º
-ÒòVITESS²»ÄÜÓÃROOTÓÃ»§Æô¶¯£¨VTCTL½ø³Ì»áÇ¿ÖÆÖĞ¶Ï£©£¬Òò´ËÔÚVITESSÔ´ÂëÄ¿Â¼ÏÂ¶Ôweb/vthook/lib/pkg/examples/dist/config/binµÈÄ¿Â¼´ò°ü£¬È»ºóĞÂÔövitessÓÃ»§×÷ÎªDEMOÔËĞĞ»·¾³
+4ï¼Œæœ¬åœ°DEMOç¯å¢ƒæ­å»ºï¼ˆä¸‡é‡Œé•¿å¾çš„å‰©ä½™80%...ï¼‰
+1ï¼‰å‡†å¤‡å·¥ä½œï¼š
+å› VITESSä¸èƒ½ç”¨ROOTç”¨æˆ·å¯åŠ¨ï¼ˆVTCTLè¿›ç¨‹ä¼šå¼ºåˆ¶ä¸­æ–­ï¼‰ï¼Œå› æ­¤åœ¨VITESSæºç ç›®å½•ä¸‹å¯¹web/vthook/lib/pkg/examples/dist/config/binç­‰ç›®å½•æ‰“åŒ…ï¼Œç„¶åæ–°å¢vitessç”¨æˆ·ä½œä¸ºDEMOè¿è¡Œç¯å¢ƒ
 groupadd vitess
 useradd -d /data1/vitess -g vitess -m vitess
 chown -R vitess:vitess vtdataroot
-×¢£ºvi /etc/hosts
+æ³¨ï¼švi /etc/hosts
 
-ĞÂÔö XXX.XXX.XXX.109 XXDB-XX-109(½â¾öNewActionAgent() failed: FullyQualifiedHostname: f
+æ–°å¢ XXX.XXX.XXX.109 XXDB-XX-109(è§£å†³NewActionAgent() failed: FullyQualifiedHostname: f
 ailed to reverse lookup this machine's local IP (fe80::215:5dff:fe06:1b3e%eth0): lookup fe80::215
 :5dff:fe06:1b3e%eth0: unrecognized address)
 
-2).profileµ÷Õû
+2).profileè°ƒæ•´
 
 VITESS 2019/09/10
 export VTROOT=VTROOT
@@ -70,9 +82,9 @@ export VTDATAROOT=/data1/vtdataroot
 export TOPO=etcd2
 PATH=HOME/.local/bin:VTTOP/bin
 
-3£©LOCALÄ£Ê½Æô¶¯
+3ï¼‰LOCALæ¨¡å¼å¯åŠ¨
 [vitess@XXXX local]$ ./101_initial_cluster.sh
-Êä³öÈÕÖ¾ÈçÏÂ£º
+è¾“å‡ºæ—¥å¿—å¦‚ä¸‹ï¼š
 enter etcd2 env
 add /vitess/global
 add /vitess/zone1
@@ -122,42 +134,42 @@ If this is not what you expected, check the input data (as JSON parsing will ski
 enter etcd2 env
 Access vtgate at http://xxxx-155-109:15001/debug/status
 
-5,ºËĞÄ½Å±¾ÊáÀí£º
-Æô¶¯Ë³Ğò£ºetcd->vtctld-up.sh->vttablet-up.sh->ÏòvtctldÒÀ´Î·¢ËÍ¹ÜÀíÃüÁî->vtgate-up.sh
-etcd-up.sh£º
+5,æ ¸å¿ƒè„šæœ¬æ¢³ç†ï¼š
+å¯åŠ¨é¡ºåºï¼šetcd->vtctld-up.sh->vttablet-up.sh->å‘vtctldä¾æ¬¡å‘é€ç®¡ç†å‘½ä»¤->vtgate-up.sh
+etcd-up.shï¼š
 
-    Æô¶¯etcd£¬ĞÂ½¨/vitess/globalºÍ/vitess/${cell}Ä¿Â¼£¬µ÷ÓÃvtctlÌí¼ÓCELLĞÅÏ¢
-vtctl -topo_implementation etcd2 -topo_global_server_address cell -server_address "cell£©
+    å¯åŠ¨etcdï¼Œæ–°å»º/vitess/globalå’Œ/vitess/${cell}ç›®å½•ï¼Œè°ƒç”¨vtctlæ·»åŠ CELLä¿¡æ¯
+vtctl -topo_implementation etcd2 -topo_global_server_address cell -server_address "cellï¼‰
 
 vtctld-up.sh:
 
-Æô¶¯vtctld
-vttablet-up.sh£º
+å¯åŠ¨vtctld
+vttablet-up.shï¼š
 
-µ÷ÓÃmysqlctlÆô¶¯mysqld_safe½ø³Ì£¬³õÊ¼»¯DB
-£¨´´½¨DB:_vt
+è°ƒç”¨mysqlctlå¯åŠ¨mysqld_safeè¿›ç¨‹ï¼Œåˆå§‹åŒ–DB
+ï¼ˆåˆ›å»ºDB:_vt
 
- ´´½¨±í£º_vt.local_metadata,_vt.shard_metadata
- ´´½¨ÓÃ»§£º'vt_dba'@'localhost'£¬'vt_app'@'localhost'£¬'vt_appdebug'@'localhost'£¬'vt_allprivs'@'localhost'£¬'vt_repl'@'%'£¬'vt_filtered'@'localhost'£¬'orc_client_user'@'%'£©
+ åˆ›å»ºè¡¨ï¼š_vt.local_metadata,_vt.shard_metadata
+ åˆ›å»ºç”¨æˆ·ï¼š'vt_dba'@'localhost'ï¼Œ'vt_app'@'localhost'ï¼Œ'vt_appdebug'@'localhost'ï¼Œ'vt_allprivs'@'localhost'ï¼Œ'vt_repl'@'%'ï¼Œ'vt_filtered'@'localhost'ï¼Œ'orc_client_user'@'%'ï¼‰
   --mysqlctl -log_dir $VTDATAROOT/tmp -tablet_uid $uid -mysql_port $mysql_port init -init_db_sql_file config/init_db.sql
-    µ÷ÓÃvttablet Æô¶¯vttablet ½ø³Ì
-³õÊ¼»¯¹ÜÀíÃüÁî£º
+    è°ƒç”¨vttablet å¯åŠ¨vttablet è¿›ç¨‹
+åˆå§‹åŒ–ç®¡ç†å‘½ä»¤ï¼š
 
-# ½«Ò»¸ö¸±±¾(replicas)ÉèÖÃÎªmaster,Í¬Ê±ÉèÖÃREAD-ONLYÎªOFF
+# å°†ä¸€ä¸ªå‰¯æœ¬(replicas)è®¾ç½®ä¸ºmaster,åŒæ—¶è®¾ç½®READ-ONLYä¸ºOFF
 vtctlclient -server localhost:15999 InitShardMaster -force commerce/0 zone1-100
-#´´½¨Schema
+#åˆ›å»ºSchema
 vtctlclient -server localhost:15999 ApplySchema -sql-file create_commerce_schema.sql commerce
-#´´½¨vschema
+#åˆ›å»ºvschema
 vtctlclient -server localhost:15999 ApplyVSchema -vschema_file vschema_commerce_initial.json commerce
-6,VITESSºËĞÄ½ø³ÌÊáÀí
-etcd£¨1¸ö£©:
+6,VITESSæ ¸å¿ƒè¿›ç¨‹æ¢³ç†
+etcdï¼ˆ1ä¸ªï¼‰:
 etcd
 --data-dir /data1/vtdataroot/etcd/
 --listen-client-urls http://localhost:2379
 --advertise-client-urls http://localhost:2379
-¼àÌı¶Ë¿ÚÔÚenv.sh: ETCD_SERVER="localhost:2379"
+ç›‘å¬ç«¯å£åœ¨env.sh: ETCD_SERVER="localhost:2379"
 
-vtctld£¨1¸ö£©:
+vtctldï¼ˆ1ä¸ªï¼‰:
 vtctld
 -topo_implementation etcd2
 -topo_global_server_address localhost:2379
@@ -174,14 +186,14 @@ vtctld
 -port 15000
 -grpc_port 15999
 -pid_file /data1/vtdataroot/tmp/vtctld.pid
-grpc_portÔÚvtctld-up.shÖĞÖ¸¶¨£¬portÔÚenv.shÖĞÖ¸¶¨£¨vtctld_web_port=15000£©
+grpc_portåœ¨vtctld-up.shä¸­æŒ‡å®šï¼Œportåœ¨env.shä¸­æŒ‡å®šï¼ˆvtctld_web_port=15000ï¼‰
 
-mysqld_safe£¨3¸ö£©:
+mysqld_safeï¼ˆ3ä¸ªï¼‰:
 
 mysqld_safe --defaults-file=/data1/vtdataroot/vt_0000000100/my.cnf
 mysqld_safe --defaults-file=/data1/vtdataroot/vt_0000000101/my.cnf
 mysqld_safe --defaults-file=/data1/vtdataroot/vt_0000000102/my.cnf
-mysqld£¨3¸ö£©:
+mysqldï¼ˆ3ä¸ªï¼‰:
 mysqld --defaults-file=/data1/vtdataroot/vt_0000000101/my.cnf
 --basedir=/usr
 --datadir=/data1/vtdataroot/vt_0000000101/data
@@ -190,9 +202,9 @@ mysqld --defaults-file=/data1/vtdataroot/vt_0000000101/my.cnf
 --pid-file=/data1/vtdataroot/vt_0000000101/mysql.pid
 --socket=/data1/vtdataroot/vt_0000000101/mysql.sock
 --port=17101
-¶Ë¿Ú¿ØÖÆÔÚvttablet-up.sh:mysql_port_base=uid_base]
+ç«¯å£æ§åˆ¶åœ¨vttablet-up.sh:mysql_port_base=uid_base]
 
-vttablet£¨3¸ö£©:
+vttabletï¼ˆ3ä¸ªï¼‰:
 vttablet
 -topo_implementation etcd2
 -topo_global_server_address localhost:2379
@@ -215,11 +227,11 @@ vttablet
 -service_map grpc-queryservice,grpc-tabletmanager,grpc-updatestream
 -pid_file /data1/vtdataroot/vt_0000000100/vttablet.pid
 -vtctld_addr http://XXX-XXXX-109:15000/
-¶Ë¿Ú¿ØÖÆÔÚvttablet-up.sh:
+ç«¯å£æ§åˆ¶åœ¨vttablet-up.sh:
 
 port_base=$[15000 + $uid_base]
 grpc_port_base=$[16000 + $uid_base]
-vtgate£¨1¸ö£©:
+vtgateï¼ˆ1ä¸ªï¼‰:
 vtgate
 -topo_implementation etcd2
 -topo_global_server_address localhost:2379
@@ -238,27 +250,27 @@ vtgate
 -pid_file /data1/vtdataroot/tmp/vtgate.pid
 -mysql_auth_server_impl none
 
-port/grpc_port/mysql_server_portÔÚvtgate-up.shÖĞÉèÖÃ
+port/grpc_port/mysql_server_portåœ¨vtgate-up.shä¸­è®¾ç½®
 
 web_port=15001
 grpc_port=15991
 mysql_server_port=15306
 mysql_server_socket_path="/tmp/mysql.sock"
-7£¬MYSQLºËĞÄ²ÎÊıÊáÀí£º
-VITESSÓÃµ½ÁËMYSQLµÄGTID¡¢°ëÍ¬²½µÈ¼¼Êõ£¬ÆäÖĞ¶ÔÓ¦Ã¿¸öshardµÄ½ø³Ì×é°üº¬vttablet,»¹ÓĞ3¸öMYSQL½ø³Ì£¬·Ö±ğ³äµ±MASTER,SLAVEºÍREAD_SERVER·şÎñ
+7ï¼ŒMYSQLæ ¸å¿ƒå‚æ•°æ¢³ç†ï¼š
+VITESSç”¨åˆ°äº†MYSQLçš„GTIDã€åŠåŒæ­¥ç­‰æŠ€æœ¯ï¼Œå…¶ä¸­å¯¹åº”æ¯ä¸ªshardçš„è¿›ç¨‹ç»„åŒ…å«vttablet,è¿˜æœ‰3ä¸ªMYSQLè¿›ç¨‹ï¼Œåˆ†åˆ«å……å½“MASTER,SLAVEå’ŒREAD_SERVERæœåŠ¡
 binlog_format = statement
 innodb_flush_log_at_trx_commit = 2
 read-only
 slave_net_timeout = 60
-slave_load_tmpdir = /data1/vtdataroot/vt_0000000100/tmp(´Ó¿â¸´ÖÆload data infile XXXÊ±´´½¨£©
+slave_load_tmpdir = /data1/vtdataroot/vt_0000000100/tmp(ä»åº“å¤åˆ¶load data infile XXXæ—¶åˆ›å»ºï¼‰
 transaction-isolation = REPEATABLE-READ
 
-°ëÍ¬²½Ïà¹Ø
+åŠåŒæ­¥ç›¸å…³
 plugin-load = rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so
-rpl_semi_sync_master_timeout = 1000000000000000000£¨²»Ê¹ÓÃÒì²½¸´ÖÆ£©
+rpl_semi_sync_master_timeout = 1000000000000000000ï¼ˆä¸ä½¿ç”¨å¼‚æ­¥å¤åˆ¶ï¼‰
 rpl_semi_sync_master_wait_no_slave = 1
 
-GTIDÏà¹Ø
+GTIDç›¸å…³
 gtid_mode = ON
 log_bin
 log_slave_updates
