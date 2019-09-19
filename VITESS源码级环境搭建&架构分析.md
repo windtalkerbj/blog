@@ -208,144 +208,263 @@ If this is not what you expected, check the input data (as JSON parsing will ski
 enter etcd2 env
 Access vtgate at http://xxxx-155-109:15001/debug/status
 
-5,核心脚本梳理：
+
+### 5,核心脚本梳理：
+
 启动顺序：etcd->vtctld-up.sh->vttablet-up.sh->向vtctld依次发送管理命令->vtgate-up.sh
+
 etcd-up.sh：
 
     启动etcd，新建/vitess/global和/vitess/${cell}目录，调用vtctl添加CELL信息
+    
 vtctl -topo_implementation etcd2 -topo_global_server_address cell -server_address "cell）
+
 
 vtctld-up.sh:
 
+
 启动vtctld
+
 vttablet-up.sh：
 
-调用mysqlctl启动mysqld_safe进程，初始化DB
-（创建DB:_vt
 
- 创建表：_vt.local_metadata,_vt.shard_metadata
- 创建用户：'vt_dba'@'localhost'，'vt_app'@'localhost'，'vt_appdebug'@'localhost'，'vt_allprivs'@'localhost'，'vt_repl'@'%'，'vt_filtered'@'localhost'，'orc_client_user'@'%'）
+调用mysqlctl启动mysqld_safe进程，初始化DB
+
+（创建DB:_vt 创建表：_vt.local_metadata,_vt.shard_metadata 创建用户：'vt_dba'@'localhost'，'vt_app'@'localhost'，'vt_appdebug'@'localhost'，'vt_allprivs'@'localhost'，'vt_repl'@'%'，'vt_filtered'@'localhost'，'orc_client_user'@'%'）
+
   --mysqlctl -log_dir $VTDATAROOT/tmp -tablet_uid $uid -mysql_port $mysql_port init -init_db_sql_file config/init_db.sql
+  
     调用vttablet 启动vttablet 进程
+    
 初始化管理命令：
 
+
 # 将一个副本(replicas)设置为master,同时设置READ-ONLY为OFF
+
 vtctlclient -server localhost:15999 InitShardMaster -force commerce/0 zone1-100
+
 #创建Schema
+
 vtctlclient -server localhost:15999 ApplySchema -sql-file create_commerce_schema.sql commerce
+
 #创建vschema
+
 vtctlclient -server localhost:15999 ApplyVSchema -vschema_file vschema_commerce_initial.json commerce
-6,VITESS核心进程梳理
+
+### 6,VITESS核心进程梳理
+
 etcd（1个）:
+
 etcd
+
 --data-dir /data1/vtdataroot/etcd/
+
 --listen-client-urls http://localhost:2379
+
 --advertise-client-urls http://localhost:2379
+
 监听端口在env.sh: ETCD_SERVER="localhost:2379"
 
+
 vtctld（1个）:
+
 vtctld
+
 -topo_implementation etcd2
+
 -topo_global_server_address localhost:2379
+
 -topo_global_root /vitess/global
+
 -cell zone1
+
 -web_dir /data1/vitess/web/vtctld
+
 -web_dir2 /data1/vitess/web/vtctld2/app
+
 -workflow_manager_init
+
 -workflow_manager_use_election
+
 -service_map grpc-vtctl
+
 -backup_storage_implementation file
+
 -file_backup_storage_root /data1/vtdataroot/backups
+
 -log_dir /data1/vtdataroot/tmp
+
 -port 15000
+
 -grpc_port 15999
+
 -pid_file /data1/vtdataroot/tmp/vtctld.pid
+
 grpc_port在vtctld-up.sh中指定，port在env.sh中指定（vtctld_web_port=15000）
+
 
 mysqld_safe（3个）:
 
+
 mysqld_safe --defaults-file=/data1/vtdataroot/vt_0000000100/my.cnf
+
 mysqld_safe --defaults-file=/data1/vtdataroot/vt_0000000101/my.cnf
+
 mysqld_safe --defaults-file=/data1/vtdataroot/vt_0000000102/my.cnf
+
 mysqld（3个）:
+
 mysqld --defaults-file=/data1/vtdataroot/vt_0000000101/my.cnf
+
 --basedir=/usr
+
 --datadir=/data1/vtdataroot/vt_0000000101/data
+
 --plugin-dir=/usr/lib64/mysql/plugin
+
 --log-error=/data1/vtdataroot/vt_0000000101/error.log
+
 --pid-file=/data1/vtdataroot/vt_0000000101/mysql.pid
+
 --socket=/data1/vtdataroot/vt_0000000101/mysql.sock
+
 --port=17101
+
 端口控制在vttablet-up.sh:mysql_port_base=uid_base]
 
+
 vttablet（3个）:
+
 vttablet
+
 -topo_implementation etcd2
+
 -topo_global_server_address localhost:2379
+
 -topo_global_root /vitess/global
+
 -log_dir /data1/vtdataroot/tmp
+
 -log_queries_to_file /data1/vtdataroot/tmp/vttablet_0000000100_querylog.txt
+
 -tablet-path zone1-0000000100
+
 -tablet_hostname 
+
 -init_keyspace commerce
+
 -init_shard 0
+
 -init_tablet_type replica
+
 -health_check_interval 5s
+
 -enable_semi_sync
+
 -enable_replication_reporter
+
 -backup_storage_implementation file
+
 -file_backup_storage_root /data1/vtdataroot/backups
+
 -restore_from_backup
+
 -port 15100
+
 -grpc_port 16100
+
 -service_map grpc-queryservice,grpc-tabletmanager,grpc-updatestream
+
 -pid_file /data1/vtdataroot/vt_0000000100/vttablet.pid
+
 -vtctld_addr http://XXX-XXXX-109:15000/
+
 端口控制在vttablet-up.sh:
 
 port_base=$[15000 + $uid_base]
+
 grpc_port_base=$[16000 + $uid_base]
+
 vtgate（1个）:
+
 vtgate
+
 -topo_implementation etcd2
+
 -topo_global_server_address localhost:2379
+
 -topo_global_root /vitess/global
+
 -log_dir /data1/vtdataroot/tmp
+
 -log_queries_to_file /data1/vtdataroot/tmp/vtgate_querylog.txt
+
 -port 15001
+
 -grpc_port 15991
+
 -mysql_server_port 15306
+
 -mysql_server_socket_path /tmp/mysql.sock
+
 -cell zone1
+
 -cells_to_watch zone1
+
 -tablet_types_to_wait MASTER,REPLICA
+
 -gateway_implementation discoverygateway
+
 -service_map grpc-vtgateservice
+
 -pid_file /data1/vtdataroot/tmp/vtgate.pid
+
 -mysql_auth_server_impl none
 
 port/grpc_port/mysql_server_port在vtgate-up.sh中设置
 
+
 web_port=15001
+
 grpc_port=15991
+
 mysql_server_port=15306
+
 mysql_server_socket_path="/tmp/mysql.sock"
-7，MYSQL核心参数梳理：
+
+### 7，MYSQL核心参数梳理：
+
 VITESS用到了MYSQL的GTID、半同步等技术，其中对应每个shard的进程组包含vttablet,还有3个MYSQL进程，分别充当MASTER,SLAVE和READ_SERVER服务
+
 binlog_format = statement
+
 innodb_flush_log_at_trx_commit = 2
+
 read-only
+
 slave_net_timeout = 60
+
 slave_load_tmpdir = /data1/vtdataroot/vt_0000000100/tmp(从库复制load data infile XXX时创建）
+
 transaction-isolation = REPEATABLE-READ
 
+
 半同步相关
+
 plugin-load = rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so
+
 rpl_semi_sync_master_timeout = 1000000000000000000（不使用异步复制）
+
 rpl_semi_sync_master_wait_no_slave = 1
 
+
 GTID相关
+
 gtid_mode = ON
+
 log_bin
+
 log_slave_updates
+
 enforce_gtid_consist
+
