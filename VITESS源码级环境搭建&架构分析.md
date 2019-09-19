@@ -13,7 +13,7 @@ MYSQL , VITESS , 分库分表，架构
 ### 1概述
 Vitess是一个用于对MySql进行水平扩展的存储平台。经过优化，它可以像在专用硬件上那样有效地运行在云体系。它集MySql 数据库的很多重要特性和NoSQL数据库的可扩展性于一体。本人因为工作需要，基于源码模式编译和部署了基于本地的VITESS运行环境，唯一的感觉就是非常复杂，自成体系。本文权当管中窥豹，有意于MYSQL大数据量分库分表的同行看完官方文档后，再看本文，可以将‘不明觉厉’中的‘不明’去掉。
 
-2.准备工作（ROOT安装，简单暴力！）
+### 2.准备工作（ROOT安装，简单暴力！）
 
 0）OS:CentOS Linux release 7.3.1611，16C16G
 
@@ -34,7 +34,7 @@ export VTROOT=下载源码在GOPATH/src下
 git clone https://github.com/vitessio/vitess.git vitess.io/vitess
 
 
-3，编译
+### 3，编译
 
 不安装ZOOKEEPER,我想用ETCD！
 在bootstrap.sh中删除if [ "zk_ver" "zk_ver" install_zookeeper
