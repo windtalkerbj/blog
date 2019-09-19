@@ -1,3 +1,21 @@
+##  VITESS水平分库DEMO一例 
+                                 
+### 作者                                 
+windtalkerbj                                 
+                                 
+### 日期                                 
+2019-09-19                               
+                                 
+### 标签                                 
+MYSQL , VITESS , 水平分库分表，架构，装逼   
+
+### 提纲  
+0，背景
+1. 预备
+2. 目标愿景：
+3-5. STEP BY STEP
+7. 未完待续：
+
 0,背景
 	为什么要写本文？
 	1 目前baidu/stackoverflow上的分库样例都是基于自带的customer/order/product,让人生厌,
@@ -56,6 +74,15 @@ sleep 15
 ./lvtctl.sh ApplySchema -sql-file create_hscs_normal.sql  k_normal
 #### 在VITESS登记不需要shard的表的METAINFO
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
+
+#### 创建VSHEMA(VITESS分区规则文件,后面聊) vschema
+./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
+
+#### 启动VTGATE(GOD说，要有门,然后就有了门,连接VITESS之路已通！)
+CELL=z_hscs "$script_root/vtgate-up.sh"
+
+#### 创建K_multi keyspace
+./lvtctl.sh CreateKeyspace  k_multi
 
 4,创建K_MULTI对应的SHARD实例(2个MYSQL集群，每个集群包含3个MYSQLD,承担MASTER/SLAVE/READ_ONLY_SVC)
 #### 两个SHARD启动
@@ -122,13 +149,6 @@ shard:
 }
                 
 
-#### 创建VSHEMA(VITESS分区规则文件,后面聊) vschema
-./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
 
-#### 启动VTGATE(GOD说，要有门,然后就有了门,连接VITESS之路已通！)
-CELL=z_hscs "$script_root/vtgate-up.sh"
-
-#### 创建K_multi keyspace
-./lvtctl.sh CreateKeyspace  k_multi
 
 7，未完待续(动态SHARDING、各种SHARDING-VINDEX...)
