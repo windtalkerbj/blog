@@ -7,7 +7,7 @@ windtalkerbj
 2019-09-19                               
                                  
 ### 标签                                 
-MYSQL , VITESS , 水平分库分表，架构，装逼   
+MYSQL , VITESS , 水平分库分表，架构
 
 ### 提纲  
 0，背景
@@ -175,7 +175,7 @@ sleep 15
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_sharded.json k_multi
 
 
-### 6,VSHEMA样例：(VITESS逼格最高部分之一,我目前掌握程度还不够装逼，期待下文吧...)
+### 6,VSHEMA样例：
 
 unshard:
 
