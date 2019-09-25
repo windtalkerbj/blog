@@ -88,9 +88,13 @@ C类表对应KEYSPACE(逻辑数据库名）为k_acct，分4个SHARD;对应表1�
 CELL=z_hscs etcd-up.sh
 运行成功后验证etcd目录已建
 vitess@XXXX]$ etcdctl --endpoints "http://127.0.0.1:2379" ls -r /
+
 /vitess
+
 /vitess/global
+
 /vitess/z_hscs
+
 
 #### 启动管理台服务
 
@@ -118,11 +122,15 @@ CELL=z_hscs KEYSPACE=k_normal UID_BASE=100 vttablet-up.sh
 
 ./lvtctl.sh CreateKeyspace  -force k_multi
 SHARD=-80   CELL=z_hscs KEYSPACE=k_multi UID_BASE=200 vttablet-up.sh
+
 SHARD=80- CELL=z_hscs KEYSPACE=k_multi UID_BASE=300 vttablet-up.sh
+
 注：-80表示数据对应的KEPPACE_ID从（负无穷，80],80-表示数据对应的KEPPACE_ID从(80,正无穷）
+
 即表示数据在2个shard中均分
 
 ./lvtctl.sh ApplySchema -sql-file create_hscs_multi.sql k_multi
+
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_multi.json k_multi
 
 vshema_hscs_multi.json是VSHEMA描述文件，VITESS靠其知道数据在多个SHARD中怎么分布：
