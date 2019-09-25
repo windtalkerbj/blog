@@ -7,7 +7,7 @@ windtalkerbj
 2019-09-19                               
                                  
 ### 标签                                 
-MYSQL , VITESS , 水平分库分表，架构
+MYSQL , VITESS , 分库分表，架构
 
 ### 提纲  
 0，Prework:闲聊
@@ -16,9 +16,9 @@ MYSQL , VITESS , 水平分库分表，架构
 
 2. 目标愿景
 
-4.STEP BY STEP
+3.STEP BY STEP
 
-5. 未完待续
+4. 未完待续
 
 
 ### 0,Prework:闲聊
@@ -186,30 +186,55 @@ vshema_hscs_multi.json是VSHEMA描述文件，VITESS靠其知道数据在多个S
 ### 创建K_acct keyspace和4个SHARD
 
 ./lvtctl.sh CreateKeyspace  -force k_acct
+
 SHARD=-40   CELL=z_hscs KEYSPACE=k_acct UID_BASE=400 vttablet-up.sh
+
 SHARD=40-80 CELL=z_hscs KEYSPACE=k_acct UID_BASE=500 vttablet-up.sh
+
 SHARD=80-c0 CELL=z_hscs KEYSPACE=k_acct UID_BASE=600 vttablet-up.sh
+
 SHARD=c0-    CELL=z_hscs KEYSPACE=k_acct UID_BASE=700 vttablet-up.sh
+
 注：-40,80,c0,表示数据对应的KETSPACE_ID被4等分在4个SHARD中
 
+
 ./lvtctl.sh InitShardMaster -force k_acct/-40 z_hscs-400
+
 ./lvtctl.sh InitShardMaster -force k_acct/40-80 z_hscs-500
+
 ./lvtctl.sh InitShardMaster -force k_acct/80-c0 z_hscs-600
+
 ./lvtctl.sh InitShardMaster -force k_acct/c0- z_hscs-700
 
+
 ./lvtctl.sh ApplySchema -sql-file create_hscs_acct.sql k_acct
+
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_acct.json k_acct
+
                 
 Shard后如图：
+
 
 ![image](https://github.com/windtalkerbj/blog/blob/master/images/Shard.png)
 
 mysql实例如图：
 
+
 ![image](https://github.com/windtalkerbj/blog/blob/master/images/SERVER.png)
 
+注：因资源有限（16C24G，灌数时VTGATE容易OOM），我修改了vttablet-up.sh,将MYSQL逻辑集群容量由3个改成2个，去掉了做READ_SVC的节点
+
+
 ### 启动VTGATE，访问VITESS(GOD说，要有门，VITESS就有了门）
+
 CELL=z_hscs vtgate-up.sh
 
 
-### 7，未完待续(动态SHARDING、各种SHARDING-VINDEX...)
+运行 mysql -h 127.0.0.1 -P 15306访问VITESS，然后用source 执行SQL文件装入DEMO数据，下图是装载完成后的示例：
+
+![image](https://github.com/windtalkerbj/blog/blob/master/images/data.png)
+
+
+
+
+### 4，未完待续(动态SHARDING、复制...)
