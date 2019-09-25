@@ -24,11 +24,11 @@ MYSQL , VITESS , 水平分库分表，架构
 ### 0,Prework:闲聊
   为什么要写本文？
   
-  1 目前baidu/stackoverflow上的分库样例都是基于自带的customer/order/product,让人生厌,最重要的是，
+  1 目前baidu/stackoverflow上的分库样例都是基于自带的customer/order/product,千篇一律,最重要的是，
   
   因为没有从头构建自定义的CELL/KEYSPACE/TABLET,这类文章丢失了很多细节
 	
-  2 VITESS自带DEMO流程: 建立NO SHARDING DEMO->垂直分库->水平分库，步骤、细节超多，读者很容易陷入细节无法自拔；
+  2 VITESS自带DEMO流程: 建立NO SHARDING DEMO->垂直分库->水平分库，步骤、细节超多，容易让人误入歧途；
     
   本文是精简版，大家喜欢水平分，我就带大家水平分
   
@@ -59,78 +59,23 @@ C按账务日期存放的账务明细、还款计划等，需要按账务日期�
 
 在本DEMO中，CELL(数据中心）会定义为z_hscs;
 
-涉及到的表：
+A类表对应KEYSPACE(逻辑数据库名）为k_normal,不分区;里面的表是sys_code_tl,500行左右
 
-A类表：sys_code_tl,500行左右
+B类表对应KEYSPACE(逻辑数据库名）为k_multi，分2个SHARD;对应表1：xxxx_itf_imp_headers，账务头表，字段INTERFACE_NAME表示具体账务类别；
 
-B类表：hscs_itf_imp_headers
+对应表2：xxxx_itf_imp_interfaces，账务拆分接口表，属于明细表，也有INTERFACE_NAME字段；
+
+C类表对应KEYSPACE(逻辑数据库名）为k_acct，分4个SHARD;对应表1：xxxx_itf_ar_interface,还款计划表，字段I_INCOME_PERIOD表示账务所属月份，如201907，
+
+表示该还款计划属于2019/07月份；表2：xxxx_dtl_accounts,字段ACCOUNTING_DATE表示账务日期
 
 
-在一个CELL(数据中心)下有两个KEYSPACE(逻辑数据库),一个是k_normal,存放无需SHARD的数据，另一个是k_multi,存放需要分区的数据
-
-其中k_multi有两个分区，均分上文中所有的XXXX_headers/XXXXX_lines
 	
 	
 ### 1,目标愿景
-不需要分区的表：sys_code_tl
 
-CREATE TABLE sys_code_tl (
-
-  CODE_ID bigint(20) NOT NULL,
-  
-  LANG varchar(10) NOT NULL,
-  
-  DESCRIPTION varchar(240) DEFAULT NULL COMMENT '快码描述',
-  
-  OBJECT_VERSION_NUMBER bigint(20) DEFAULT '1',
-  
-  REQUEST_ID bigint(20) DEFAULT '-1',
-  
-  PROGRAM_ID bigint(20) DEFAULT '-1',
-  
-  ...
-  
-  数据记录500多条
-  
-流水号表(VITESS解决AUTO INCREMENT问题的方案，参看官网不多说）
-
-create table head_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';
-
-create table line_seq(id int, next_id bigint, cache bigint, primary key(id)) comment 'vitess_sequence';
-
-
-需要分区的表：
-
-CREATE TABLE XXXX_headers (
-
-  HEADER_ID bigint(20) NOT NULL  COMMENT '表ID，主键，供其他表做外键',
-  
-  SOURCE_SYSTEM_CODE varchar(30) DEFAULT NULL COMMENT '来源系统',
-  
-  BATCH_NUM varchar(100) DEFAULT NULL COMMENT '批次号',
-  
-  INTERFACE_NAME varchar(240) DEFAULT NULL COMMENT '接口定义名称',
-  
-  ...
-  
-  字段39个，数据记录 10W条左右
-  
-CREATE TABLE XXXXX_lines (
-
-  	LINE_ID bigint(20) NOT NULL ,
-	
-	HEADER_ID bigint(20) NOT NULL COMMENT '头表ID，用于关联本行数据所属的批次',
-	
-	SOURCE_ITERFACE_ID bigint(20) NOT NULL COMMENT '来源ID，INTERFACE表主键ID',
-	
-	PROCESS_DATE datetime DEFAULT NULL COMMENT '后台处理日期，比如生成结算单日期', 
-	
-	...
-	
-  字段近300个，数据记录 300W条
-  
-XXXX_headers和XXXXX_lines按字段HEADER_ID，一对多关系
-
+逻辑数据库划分：
+![image](https://github.com/windtalkerbj/blog/blob/master/images/SPACE.png)
 	
 
 
