@@ -16,9 +16,9 @@ MYSQL , VITESS , 水平分库分表，架构
 
 2. 目标愿景
 
-3-5. STEP BY STEP（etcd启动->创建KEYSPACE->创建表、分区规则->数据导入）
+4.STEP BY STEP
 
-7. 未完待续
+5. 未完待续
 
 
 ### 0,Prework:闲聊
@@ -72,38 +72,45 @@ C类表对应KEYSPACE(逻辑数据库名）为k_acct，分4个SHARD;对应表1�
 
 	
 	
-### 1,目标愿景
+### 2,目标愿景
 
 逻辑数据库划分：
 ![image](https://github.com/windtalkerbj/blog/blob/master/images/SPACE.png)
 	
+应用能看到3个逻辑数据库，K_normal,k_multi,k_acct,分别存放非sharding数据、hash sharding数据和日期范围数据
+
 
 
 ### 3,创建CELL/KEYSPACE/MYSQL逻辑集群
 
 #### 启动etcd,创建z_hscs CELL(CELL==数据中心,写这句话时，感觉牛气冲天，XX在手，江山我有)
 
-CELL=z_hscs "$script_root/etcd-up.sh"
+CELL=z_hscs etcd-up.sh
+运行成功后验证etcd目录已建
+vitess@XXXX]$ etcdctl --endpoints "http://127.0.0.1:2379" ls -r /
+/vitess
+/vitess/global
+/vitess/z_hscs
 
 #### 启动管理台服务
 
-CELL=z_hscs "$script_root/vtctld-up.sh"
+CELL=z_hscs vtctld-up.sh
 
-#### 创建K_normal keyspace和对应MYSQL逻辑集群
+### 创建K_normal keyspace和对应MYSQL逻辑集群
 
-CELL=z_hscs KEYSPACE=k_normal UID_BASE=100 "$script_root/vttablet-up.sh"
+#### 创建k_normal mysql逻辑集群，生成3个MYSQLD实例，分别为MASTER,READONLY,READ_SVC
 
-sleep 15
+CELL=z_hscs KEYSPACE=k_normal UID_BASE=100 vttablet-up.sh
 
-#### 将MYSQL逻辑集群中ID为100的MYSQL置为MASTER，同时设置READONLY=0
 ./lvtctl.sh InitShardMaster -force k_normal/0 z_hscs-100
 
-#### 在k_normal上创建不需要shard的表
+对应SQL/VShema脚本:
+
+#### 在k_normal库上建表
 
 ./lvtctl.sh ApplySchema -sql-file create_hscs_normal.sql  k_normal
 
-#### 在VITESS登记不需要shard的表的METAINFO
-
+#### 登记k_normal sharding信息
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
 
 
