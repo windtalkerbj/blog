@@ -10,26 +10,26 @@ windtalkerbj
 MYSQL , VITESS , 水平分库分表，架构
 
 ### 提纲  
-0，背景
+0，Prework:闲聊
 
-1. 预备
+1，背景
 
 2. 目标愿景
 
-3-5. STEP BY STEP
+3-5. STEP BY STEP（etcd启动->创建KEYSPACE->创建表、分区规则->数据导入）
 
 7. 未完待续
 
 
-### 0,背景
+### 0,Prework:闲聊
   为什么要写本文？
   
   1 目前baidu/stackoverflow上的分库样例都是基于自带的customer/order/product,让人生厌,最重要的是，
   
   因为没有从头构建自定义的CELL/KEYSPACE/TABLET,这类文章丢失了很多细节
 	
-  2 VITESS自带DEMO流程: 建立NO SHARDING DEMO->垂直分库->水平分库，步骤头绪很多，
-  
+  2 VITESS自带DEMO流程: 建立NO SHARDING DEMO->垂直分库->水平分库，步骤、细节超多，读者很容易陷入细节无法自拔；
+    
   本文是精简版，大家喜欢水平分，我就带大家水平分
   
   3 题外话:讨厌JAVA就是因为其不够开门建山，各种封装(OTTER实现根本看不进去)
@@ -38,9 +38,40 @@ MYSQL , VITESS , 水平分库分表，架构
   
   人生苦短
   
+  4 通过阅读本文，可以掌握用VITESS分库（垂直分隔）、按HASH/按日期范围分表（水平分割）
+  
+  5 最好的分库方式就是满足绝大部分业务需求的分库，本文仅从纯技术角度演示下最常用的分库手段和途径，目的是帮助了解VITESS，
+  
+  演示的分库方式就见仁见智了
+  
+  
+  
+  
+### 1，背景：
+
+目前本DEMO模拟一个财务类应用的数据库，其中存在3类表：
+
+A是无需分区的表，比如是配置表或者数据量小，或应用中未和其他业务类表在可写事务中；
+
+B是需要根据合约编号（业务要素）或接口类型（财务数据处理基础，根据不同接口写入不同的目标表中）进行HASH均分的表；
+
+C按账务日期存放的账务明细、还款计划等，需要按账务日期进行分表
+
+在本DEMO中，CELL(数据中心）会定义为z_hscs;
+
+涉及到的表：
+
+A类表：sys_code_tl,500行左右
+
+B类表：hscs_itf_imp_headers
+
+
+在一个CELL(数据中心)下有两个KEYSPACE(逻辑数据库),一个是k_normal,存放无需SHARD的数据，另一个是k_multi,存放需要分区的数据
+
+其中k_multi有两个分区，均分上文中所有的XXXX_headers/XXXXX_lines
 	
 	
-### 1,预备
+### 1,目标愿景
 不需要分区的表：sys_code_tl
 
 CREATE TABLE sys_code_tl (
@@ -101,11 +132,6 @@ CREATE TABLE XXXXX_lines (
 XXXX_headers和XXXXX_lines按字段HEADER_ID，一对多关系
 
 	
-### 2,目标愿景：
-
-在一个CELL(数据中心)下有两个KEYSPACE(逻辑数据库),一个是k_normal,存放无需SHARD的数据，另一个是k_multi,存放需要分区的数据
-
-其中k_multi有两个分区，均分上文中所有的XXXX_headers/XXXXX_lines
 
 
 ### 3,创建CELL/KEYSPACE/MYSQL逻辑集群
