@@ -114,102 +114,32 @@ CELL=z_hscs KEYSPACE=k_normal UID_BASE=100 vttablet-up.sh
 ./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
 
 
-#### 创建VSHEMA(VITESS分区规则文件,后面聊) vschema
+### 创建K_multi keyspace和2个SHARD
 
-./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_normal.json k_normal
+./lvtctl.sh CreateKeyspace  -force k_multi
+SHARD=-80   CELL=z_hscs KEYSPACE=k_multi UID_BASE=200 vttablet-up.sh
+SHARD=80- CELL=z_hscs KEYSPACE=k_multi UID_BASE=300 vttablet-up.sh
+注：-80表示数据对应的KEPPACE_ID从（负无穷，80],80-表示数据对应的KEPPACE_ID从(80,正无穷）
+即表示数据在2个shard中均分
 
+./lvtctl.sh ApplySchema -sql-file create_hscs_multi.sql k_multi
+./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_multi.json k_multi
 
-#### 启动VTGATE(GOD说，要有门,然后就有了门,连接VITESS之路已通！)
+vshema_hscs_multi.json是VSHEMA描述文件，VITESS靠其知道数据在多个SHARD中怎么分布：
 
-CELL=z_hscs "$script_root/vtgate-up.sh"
+例如 表hscs_itf_imp_headers按interface_name字段在2个SHARD上按HASH分布：
 
-
-#### 创建K_multi keyspace
-
-./lvtctl.sh CreateKeyspace  k_multi
-
-
-### 4,创建K_MULTI对应的SHARD实例(2个MYSQL集群，每个集群包含3个MYSQLD,承担MASTER/SLAVE/READ_ONLY_SVC)
-
-#### 两个SHARD启动
-
-SHARD=-80 CELL=z_hscs KEYSPACE=k_multi UID_BASE=300 "$script_root/vttablet-up.sh"
-
-SHARD=80- CELL=z_hscs KEYSPACE=k_multi UID_BASE=400 "$script_root/vttablet-up.sh"
-
-sleep 15
-
-./lvtctl.sh InitShardMaster -force k_multi/-80 z_hscs-300
-
-./lvtctl.sh InitShardMaster -force k_multi/80- z_hscs-400
-
-
-### 5,在MYSQL创建分区表并登记分区规则到VITESS上
-
-./lvtctl.sh ApplySchema -sql-file create_hscs_sharded.sql k_multi
-
-#### 在VITESS登记需要shard的表的METAINFO
-
-./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_sharded.json k_multi
-
-
-### 6,VSHEMA样例：
-
-unshard:
-
-{
-
-    "sharded": false,
-    
-    "tables": {
-    
-        "head_seq": {
-	
-            "type": "sequence"
-	    
-        },
-	
-        "line_seq": {
-	
-            "type": "sequence"
-	    
-        },
-	
-        "sys_code_tl":{
-	
-        }
-	
-    }
-    
-}
-
-shard:
-
-{
-
-    "sharded": true,
-    
-    "vindexes": {
-    
-        "hash": {
-	
-            "type": "hash"
-	    
-        }
-	
-    },
-    
-    "tables": {
-    
-        "hscs_itf_imp_headers": {
+"tables": {
+        
+	"hscs_itf_imp_headers": {
 	
             "column_vindexes": [
 	    
                 {
 		
-                    "column": "header_id",
+                    "column": "interface_name",
 		    
-                    "name": "hash"
+                    "name": "unicode_loose_md5"
 		    
                 }
 		
@@ -223,17 +153,19 @@ shard:
 		
             }
 	    
-        },
+        }
 	
-        "hscs_itf_imp_lines": {
+例如 表yxhscs_itf_contract_validated按APPLY_NUM(贷款合约编号)字段在2个SHARD上按HASH分布：
 	
-            "column_vindexes": [
+	"yxhscs_itf_contract_validated": {
+	
+            "column_vindexes": [\
 	    
                 {
 		
-                    "column": "header_id",
+                    "column": "apply_num",
 		    
-                    "name": "hash"
+                    "name": "unicode_loose_md5"
 		    
                 }
 		
@@ -241,18 +173,43 @@ shard:
 	    
             "auto_increment": {
 	    
-                "column": "line_id",
+                "column": "contract_validated_id",
 		
-                "sequence": "line_seq"
+                "sequence": "alix_con_seq"
 		
             }
 	    
         }
 	
-    }
-    
-}
+        
 
+### 创建K_acct keyspace和4个SHARD
+
+./lvtctl.sh CreateKeyspace  -force k_acct
+SHARD=-40   CELL=z_hscs KEYSPACE=k_acct UID_BASE=400 vttablet-up.sh
+SHARD=40-80 CELL=z_hscs KEYSPACE=k_acct UID_BASE=500 vttablet-up.sh
+SHARD=80-c0 CELL=z_hscs KEYSPACE=k_acct UID_BASE=600 vttablet-up.sh
+SHARD=c0-    CELL=z_hscs KEYSPACE=k_acct UID_BASE=700 vttablet-up.sh
+注：-40,80,c0,表示数据对应的KETSPACE_ID被4等分在4个SHARD中
+
+./lvtctl.sh InitShardMaster -force k_acct/-40 z_hscs-400
+./lvtctl.sh InitShardMaster -force k_acct/40-80 z_hscs-500
+./lvtctl.sh InitShardMaster -force k_acct/80-c0 z_hscs-600
+./lvtctl.sh InitShardMaster -force k_acct/c0- z_hscs-700
+
+./lvtctl.sh ApplySchema -sql-file create_hscs_acct.sql k_acct
+./lvtctl.sh ApplyVSchema -vschema_file vschema_hscs_acct.json k_acct
                 
+Shard后如图：
+
+![image](https://github.com/windtalkerbj/blog/blob/master/images/Shard.png)
+
+mysql实例如图：
+
+![image](https://github.com/windtalkerbj/blog/blob/master/images/SERVER.png)
+
+### 启动VTGATE，访问VITESS(GOD说，要有门，VITESS就有了门）
+CELL=z_hscs vtgate-up.sh
+
 
 ### 7，未完待续(动态SHARDING、各种SHARDING-VINDEX...)
